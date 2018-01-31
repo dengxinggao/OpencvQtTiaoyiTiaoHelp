@@ -59,8 +59,8 @@ void MainWindow::on_pushButton_clicked()
             adbstring = QString::fromLocal8Bit(process.readAllStandardOutput()    );
             if("error" != adbstring.mid(0,5))
             {
-                adbstring = adbstring.mid(0,24);
-                if("Physical size: 1080x1920" == adbstring)
+                adbstring = adbstring.mid(0,23);
+                if("Physical size: 1080x192" == adbstring)
                 {
                     LenMultiple = PS1080x1920Multiple;
                     EquipmentOk = true;
@@ -287,6 +287,8 @@ void MainWindow::tiao()
 
 void MainWindow::on_pushButton_stop_clicked()
 {
+    process.start("taskkill /f /im adb.exe");
+    process.waitForFinished();
     timer1.stop();
     stoptiao = true;
     ui->pushButton_stop->setDisabled(true);
