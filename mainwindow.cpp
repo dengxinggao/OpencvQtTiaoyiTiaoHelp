@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QTime>
+#include "help.h"
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -13,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle("跳一跳辅助");
     connect(&timer1,SIGNAL(timeout()),this,SLOT(tiao()));
     cishu = 0;
     stoptiao = false;
@@ -57,17 +59,37 @@ void MainWindow::on_pushButton_clicked()
             adbstring = QString::fromLocal8Bit(process.readAllStandardOutput()    );
             if("error" != adbstring.mid(0,5))
             {
-                adbstring.chop(3);
+                adbstring = adbstring.mid(0,24);
                 if("Physical size: 1080x1920" == adbstring)
                 {
                     LenMultiple = PS1080x1920Multiple;
                     EquipmentOk = true;
                     ui->textBrowser->append("设备分辨率:1080x1920");
                     ui->textBrowser->append("打开跳一跳，点击开始游戏，就可以点击<开始跳>了");
+                    ui->lineEdit_Beilv->setText(QString::number(PS1080x1920Multiple,'f',2));
+                    ui->lineEdit_Feny->setText(QString::number(PS1080x1920Feny,10));
+                    ui->lineEdit_MaxX->setText(QString::number(PS1080x1920MaxX,10));
+                    LenMultiple = PS1080x1920Multiple;
+                    LocFeny = PS1080x1920Feny;
+                    LocMaxX = PS1080x1920MaxX;
                 }
                 else
                 {
-                    ui->textBrowser->append("该手机分辨率"+ adbstring +"还未支持，请联系开发者添加");
+                    bool f1,f2,f3;
+                    LenMultiple = ui->lineEdit_Beilv->text().toDouble(& f1);
+                    LocFeny = ui->lineEdit_Feny->text().toDouble(& f2);
+                    LocMaxX = ui->lineEdit_MaxX->text().toDouble(& f3);
+                    if( f1 & f2 &f3 )
+                    {
+                        EquipmentOk = true;
+                        ui->textBrowser->append("你已设置自定义分辨率");
+
+                    }
+                    else
+                    {
+                        ui->textBrowser->append("该手机分辨率"+ adbstring +"还未支持，请联系开发者添加,或者自定义倍率");
+
+                    }
                 }
             }
             else
@@ -165,10 +187,10 @@ void MainWindow::tiao()
 
     int firstpoint_flag,firstpoint_x,firstpoint_x1,firstpoint_x2,firstpoint_y,leftpoint_x,leftpoint_y,rightpoint_x,rightpoint_y,minx,maxx;
     firstpoint_flag = 0;
-    minx=2000,maxx=0;
-    for(i=300;i<(maxLoc.y);i++)//row,y
+    minx=9999,maxx=0;
+    for(i=LocFeny;i<(maxLoc.y);i++)//row,y
     {
-        for(j=1;j<1080;j++)//col,x
+        for(j=1;j<LocMaxX;j++)//col,x
         {
             if( qipanimage.at<uchar>(i,j) == 255)
             {
@@ -278,4 +300,11 @@ void MainWindow::on_pushButton_start_clicked()
     stoptiao = false;
     ui->pushButton_start->setDisabled(true);
     ui->pushButton_stop->setEnabled(true);
+}
+
+void MainWindow::on_actionAboutset_triggered()
+{
+    Help h;
+    h.exec();
+
 }

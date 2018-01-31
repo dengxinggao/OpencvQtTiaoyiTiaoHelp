@@ -6,6 +6,9 @@
 #include <QTimer>
 
 #define PS1080x1920Multiple 1.38
+#define PS1080x1920Feny 300
+#define PS1080x1920MaxX 1080
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,7 +23,7 @@ public:
     QProcess process;
     double lenth;
     QTimer timer1;
-    quint16 cishu,maxcishu;
+    quint16 cishu,maxcishu,LocFeny,LocMaxX;
     bool stoptiao,EquipmentOk;
     double LenMultiple;
 
@@ -31,6 +34,8 @@ private slots:
     void on_pushButton_stop_clicked();
 
     void on_pushButton_start_clicked();
+
+    void on_actionAboutset_triggered();
 
 private:
     Ui::MainWindow *ui;

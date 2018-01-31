@@ -8,16 +8,19 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = QtAdb
+TARGET = helpTiaoyitiao
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    help.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    help.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    help.ui
 
 
 INCLUDEPATH += C:\opencv\Release\install\include
@@ -30,3 +33,6 @@ LIBS += C:\opencv\Release\install\x86\mingw\lib\libopencv_features2d340.dll.a
 LIBS += C:\opencv\Release\install\x86\mingw\lib\libopencv_calib3d340.dll.a
 
 RC_ICONS = "myapp.ico"
+
+RESOURCES += \
+    1.qrc

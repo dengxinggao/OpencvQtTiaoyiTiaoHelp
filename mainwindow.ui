@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>288</width>
-    <height>656</height>
+    <width>319</width>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0" colspan="3">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <widget class="QLabel" name="label">
       <property name="minimumSize">
        <size>
@@ -34,7 +34,7 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0" colspan="3">
+    <item>
      <widget class="QTextBrowser" name="textBrowser">
       <property name="maximumSize">
        <size>
@@ -44,38 +44,152 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="pushButton">
-      <property name="maximumSize">
-       <size>
-        <width>80</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>连接手机</string>
-      </property>
-     </widget>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>最大X:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_MaxX">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;分辨率X值，比如分辨率1080*1920，此处填1080&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="whatsThis">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>分数最大Y:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_Feny">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;显示分数位置的底部Y值&lt;/p&gt;&lt;p&gt;从游戏截图中找&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/imge/screen.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>倍率:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_Beilv">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;此处填距离与时间的转换关系，分辨率1080*1920，此处填1.38，其他手机，自己自行调试&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
-    <item row="2" column="1">
-     <widget class="QPushButton" name="pushButton_start">
-      <property name="maximumSize">
-       <size>
-        <width>80</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>开始跳</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QPushButton" name="pushButton_stop">
-      <property name="text">
-       <string>不跳了</string>
-      </property>
-     </widget>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>连接手机</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_start">
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>开始跳</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_stop">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>不跳了</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -84,11 +198,23 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>288</width>
+     <width>319</width>
      <height>23</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>帮助</string>
+    </property>
+    <addaction name="actionAboutset"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
+  <action name="actionAboutset">
+   <property name="text">
+    <string>设置说明</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
