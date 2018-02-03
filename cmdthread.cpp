@@ -170,8 +170,8 @@ void cmdthread::run()
         if(lenth<maxduijiaoxianlenth)
         {
             quint64 timems,ax,ay;
-            ax = 530 + qrand()%140;
-            ay = 1520 + qrand()%120;
+            ax = LocMaxX/2 + qrand()%140;
+            ay = LocMaxY - 200 + qrand()%120;
             timems = LenMultiple * lenth ;//- 20 +  qrand()%40;
             QString s;
             s = "adb shell input swipe " + QString::number(ax, 10) + " " + QString::number(ay, 10) + " " +  QString::number(ax, 10) + " " +  QString::number(ay, 10) + " " + QString::number((int)timems, 10);
@@ -199,9 +199,7 @@ void cmdthread::run()
         }
         else
         {
-            msleep((qrand()%1000)+1000);
+            msleep((qrand()%1000)+1500);
         }
     }
-    process.start("taskkill /f /im adb.exe");
-    process.waitForFinished();
 }

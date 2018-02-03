@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QCloseEvent>
+#include <QDebug>
 #include <windows.h>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -7,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("跳一跳助攻Ver1802021601");
+    setWindowTitle("跳一跳助攻Ver1802030920");
     connect(&t,SIGNAL(adbstringsend(QString)),this,SLOT(textappen(QString)));
     connect(&t,SIGNAL(chengxujieshu()),this,SLOT(xianchengjieshu()));
     connect(&t,SIGNAL(displaymat()),this,SLOT(labechange()));
@@ -21,9 +23,6 @@ MainWindow::~MainWindow()
 }
 void MainWindow::on_pushButton_stop_clicked()
 {
-    QProcess process;
-    process.start("taskkill /f /im adb.exe");
-    process.waitForFinished();
     t.stop();
     ui->pushButton_stop->setDisabled(true);
     ui->pushButton_connect->setEnabled(true);
@@ -51,7 +50,8 @@ void MainWindow::labechange()
     {
         img = QImage((const uchar*)(dispimage.data),dispimage.cols,dispimage.rows,dispimage.cols*dispimage.channels(),QImage::Format_Indexed8);
     }
-    ui->label->setPixmap(QPixmap::fromImage(img).scaledToWidth(270,Qt::SmoothTransformation));
+
+    ui->label->setPixmap(QPixmap::fromImage(img).scaledToHeight(ui->label->size().height(),Qt::FastTransformation));
 
 }
 
@@ -101,7 +101,7 @@ void MainWindow::on_pushButton_connect_clicked()
 
             if(!fbl->isNull())
             {
-                ui->pushButton_connect->setDisabled(true);
+
                 ui->pushButton_start->setEnabled(true);
                 ui->lineEdit_Beilv->setEnabled(true);
                 ui->lineEdit_Feny->setEnabled(true);
@@ -160,7 +160,7 @@ void MainWindow::on_pushButton_start_clicked()
         LenMultiple = ui->lineEdit_Beilv->text().toDouble(& f1);
         LocFeny = ui->lineEdit_Feny->text().toDouble(& f2);
 
-        if( f1 & f2 )
+        if( f1 & f2 & (LocFeny<(LocMaxY/2)) )
         {
             t.LocFeny=LocFeny;
             t.LocMaxX=LocMaxX;
@@ -169,7 +169,9 @@ void MainWindow::on_pushButton_start_clicked()
             t.LenMultiple = LenMultiple;
             ui->lineEdit_Beilv->setDisabled(true);
             ui->lineEdit_Feny->setDisabled(true);
-            //ui->checkBox->setDisabled(true);
+            ui->pushButton_connect->setDisabled(true);
+
+            ui->pushButton_stop->setEnabled(true);
             ui->pushButton_start->setDisabled(true);
             t.qidong();
             t.start();
@@ -187,4 +189,14 @@ void MainWindow::on_pushButton_start_clicked()
 void MainWindow::on_checkBox_clicked()
 {
     t.RandMove = ui->checkBox->checkState();;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QProcess process;
+    process.start("taskkill /f /im adb.exe");
+    process.waitForFinished();
+    t.stop();
+    event->accept();
+
 }
