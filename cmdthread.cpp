@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QImage>
 #include <QTime>
+#include <string.h>
 
 
 #include <opencv2/core/core.hpp>
@@ -16,11 +17,11 @@ cv::Mat dispimage ;
 cmdthread::cmdthread()
 {
     Stop = false;
-    xiaorenimage = cv::imread("xiaoren.png");
+
     QTime tm;
     tm = QTime::currentTime();
     srand(tm.hour()*1440000+tm.minute()*60000+tm.second()*1000+tm.msec());
-    maxcishu = qrand()%20;
+    maxcishu = 5+qrand()%15;
     cishu = 0;
 }
 
@@ -64,6 +65,33 @@ void cmdthread::run()
         }
         //emit adbstringsend("截图成功");
 
+        /*
+        if(LocMaxX == 720)
+        {
+            xiaorenimage = cv::imread("720x1280xiaoren.png");
+        }
+        else if(LocMaxX == 540)
+        {
+            xiaorenimage = cv::imread("540x960xiaoren.png");
+        }
+        else if(LocMaxX ==900)
+        {
+            xiaorenimage = cv::imread("900x1600xiaoren.png");
+        }
+        else if(LocMaxX ==1080)
+        {
+            xiaorenimage = cv::imread("1080x1920xiaoren.png");
+        }
+        else
+        {
+            emit adbstringsend("改分辨率无法支持");
+            break;
+        }
+        */
+        xiaorenimage = cv::imread("xiaoren.png");
+        cv::resize(xiaorenimage,xiaorenimage,cv::Size(76*LocMaxX/1080,209*LocMaxY/1920));
+
+
         qipanimage = cv::imread("screen.png");
         dispimage = cv::imread("screen.png");
 
@@ -80,40 +108,74 @@ void cmdthread::run()
 
         cv::rectangle(qipanimage,maxLoc,cv::Point(maxLoc.x+78,maxLoc.y+211),(0,0,0),CV_FILLED);
 
-        maxLoc.x = maxLoc.x + 39;
-        maxLoc.y = maxLoc.y + 193;
+
 
         int i,j;
         int firstpoint_flag,firstpoint_x,firstpoint_x1,firstpoint_x2,firstpoint_y,rightpoint_x,rightpoint_y,minx,maxx;
         firstpoint_flag = 0;
         minx=9999,maxx=0;
-        for(i=LocFeny;i<(maxLoc.y-123);i++)//row,y只找到小人脖子下
+        for(i=LocFeny;i<(maxLoc.y+BoziY);i++)//row,y只找到小人脖子下
         {
-            for(j=1;j<LocMaxX;j++)//col,x
+            if((maxLoc.x+JiaoX) < (LocMaxX/2))//在左搜右
             {
-                if( qipanimage.at<uchar>(i,j) == 255)
+                for(j=(maxLoc.x+JiaoX);j<LocMaxX;j++)//col,x
                 {
-                    if(firstpoint_flag<2)
+                    if( qipanimage.at<uchar>(i,j) == 255)
                     {
-                        if( firstpoint_flag == 0)
+                        if(firstpoint_flag<2)
                         {
-                            firstpoint_flag = 1;firstpoint_x1 = j;firstpoint_y=i;
+                            if( firstpoint_flag == 0)
+                            {
+                                firstpoint_flag = 1;firstpoint_x1 = j;firstpoint_y=i;
+                            }
+                            if( firstpoint_flag == 1)
+                            {
+                                firstpoint_x2 = j;firstpoint_y=i;
+                            }
                         }
-                        if( firstpoint_flag == 1)
+                        if(j>(maxx+3))
                         {
-                            firstpoint_x2 = j;firstpoint_y=i;
+                            maxx=j;rightpoint_x = j;rightpoint_y = i;
                         }
-                    }
-                    if(j>(maxx+3))
-                    {
-                        maxx=j;rightpoint_x = j;rightpoint_y = i;
-                    }
 
+                    }
                 }
+
             }
+            else//在右搜左
+            {
+                //for(j=1;j<( maxLoc.x + (LocMaxX/2) )/2;j++)//col,x
+                //for(j=1;j<( (maxLoc.x-JiaoX) + (LocMaxX/2) )/2;j++)//col,x
+                for(j=1;j<(LocMaxX/2);j++)//col,x
+                {
+                    if( qipanimage.at<uchar>(i,j) == 255)
+                    {
+                        if(firstpoint_flag<2)
+                        {
+                            if( firstpoint_flag == 0)
+                            {
+                                firstpoint_flag = 1;firstpoint_x1 = j;firstpoint_y=i;
+                            }
+                            if( firstpoint_flag == 1)
+                            {
+                                firstpoint_x2 = j;firstpoint_y=i;
+                            }
+                        }
+                        if(j>(maxx+3))
+                        {
+                            maxx=j;rightpoint_x = j;rightpoint_y = i;
+                        }
+
+                    }
+                }
+
+            }
+
             //if(firstpoint_flag)break;//只找最高点
             if(firstpoint_flag)firstpoint_flag=2;
         }
+        maxLoc.x = maxLoc.x +  JiaoX;
+        maxLoc.y = maxLoc.y +  JiaoY;
         //找出最高点
         firstpoint_x = (firstpoint_x2 + firstpoint_x1)/2;
         int tiao_x,tiao_y;
@@ -135,13 +197,17 @@ void cmdthread::run()
         //伪装小人位置
         if(RandMove)
         {
-            quint64 weizhuangchanshu;
-            weizhuangchanshu = tiao_y - firstpoint_y;
-
-            if(weizhuangchanshu>WeiZhuangfanwei)
+            if((tiao_y - firstpoint_y) > (JiaoX*1.3) )
             {
-                tiao_y = tiao_y - qrand()%(WeiZhuangfanwei/2);
-                tiao_x = tiao_x - qrand()%(WeiZhuangfanwei/2);
+                tiao_y = tiao_y - JiaoX*0.8;//qrand()%(JiaoX/2);
+                if(tiao_x>maxLoc.x)
+                {
+                    tiao_x = tiao_x + JiaoX*0.7;//qrand()%(JiaoX/2);
+                }
+                else
+                {
+                    tiao_x = tiao_x - JiaoX*0.7;//qrand()%(JiaoX/2);
+                }
                 //cv::circle(dispimage,cv::Point(tiao_x,tiao_y),5,(255,255,255),-1);//标出人位置
                 emit adbstringsend("偏一下");
             }
@@ -159,20 +225,16 @@ void cmdthread::run()
         }
         lenth = sqrt(lenth);
 
-        //cv::circle(dispimage,maxLoc,5,(255,255,255),-1);//标出人位置
         cv::line(dispimage,maxLoc,cv::Point(tiao_x,tiao_y),(255,255,255),3,8);
-        //cv::circle(dispimage,cv::Point(firstpoint_x,firstpoint_y),5,(255,255,255),-1);//标出人位置
-        //cv::circle(dispimage,cv::Point(tiao_x,tiao_y),5,(255,255,255),-1);//标出人位置
-        //cv::circle(dispimage,cv::Point(rightpoint_x,rightpoint_y),5,(255,255,255),-1);//标出人位置
 
         quint64 maxduijiaoxianlenth;
         maxduijiaoxianlenth = sqrt(LocMaxX*LocMaxX + LocMaxY*LocMaxY);
         if(lenth<maxduijiaoxianlenth)
         {
             quint64 timems,ax,ay;
-            ax = LocMaxX/2 + qrand()%140;
-            ay = LocMaxY - 200 + qrand()%120;
-            timems = LenMultiple * lenth ;//- 20 +  qrand()%40;
+            ax = LocMaxX/2 + (qrand()%(TouchYMax-TouchYMin)) - (TouchYMax-TouchYMin)/2;
+            ay = (qrand()%(TouchYMax-TouchYMin)) + TouchYMin;
+            timems = LenMultiple * lenth ;
             QString s;
             s = "adb shell input swipe " + QString::number(ax, 10) + " " + QString::number(ay, 10) + " " +  QString::number(ax, 10) + " " +  QString::number(ay, 10) + " " + QString::number((int)timems, 10);
             process.start(s);
@@ -191,15 +253,15 @@ void cmdthread::run()
         if(cishu>maxcishu)
         {
             quint16 xxm;
-            xxm = 5000 + qrand()%5000;
+            xxm = 2000 + qrand()%8000;
             emit adbstringsend("跳了" + QString::number(cishu,10) + "下,休息"+ QString::number(xxm,10) +"毫秒再跳");
             msleep(xxm);
             cishu = 0;
-            maxcishu = qrand()%20;
+            maxcishu = 5+qrand()%15;
         }
         else
         {
-            msleep((qrand()%1000)+1500);
-        }
+            msleep((qrand()%1500)+1500);
+        }//msleep(1);
     }
 }

@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>297</width>
+    <width>288</width>
     <height>713</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>297</width>
+    <width>288</width>
     <height>713</height>
    </size>
   </property>
@@ -36,7 +36,7 @@
        </size>
       </property>
       <property name="text">
-       <string/>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;跳一跳辅助程序Ver1.3.2&lt;/p&gt;&lt;p&gt;自动适配所有分辨率16：9的手机&lt;/p&gt;&lt;p&gt;Qt5.6.3&lt;/p&gt;&lt;p&gt;Opencv3.4.0&lt;/p&gt;&lt;p&gt;ADBShell&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/dengxinggao/OpencvQtTiaoyiTiaoHelp&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/dengxinggao/OpencvQtTiaoyiTiaoHelp&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
@@ -57,47 +57,44 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>分数显示位置底部Y坐标:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_Feny">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;该值为分数显示位置底部的Y坐标&lt;/p&gt;&lt;p&gt;用画图程序打开截图就能找出&lt;/p&gt;&lt;p&gt;分辨率1080*1920 该值为300&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/imge/help.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;开启后，会根据目标大小，决定是否多跳半个人距离&lt;/p&gt;&lt;p&gt;修改后立即生效&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
-         <string>距离转换成按压时间系数:</string>
+         <string>开启偏差</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_Beilv">
+       <widget class="QLabel" name="label_LenMultiple">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>倍率:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_LenMultiple">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;该值需要慢慢调试，1080*1920该处填1.38&lt;/p&gt;&lt;p&gt;其他值自行调试，可以看小人是否跳到目标点，如果跳远，可适当调小该值，如果跳近了，需要调大该值&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;可以适当修改&lt;/p&gt;&lt;p&gt;修改时，不开启偏差&lt;/p&gt;&lt;p&gt;跳的太远，调小该值&lt;/p&gt;&lt;p&gt;跳的太近，调大该值&lt;/p&gt;&lt;p&gt;修改后，再根据需要 决定是否开启偏差&lt;/p&gt;&lt;p&gt;修改后立即生效&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="checkBox">
-      <property name="text">
-       <string>开启随机偏差</string>
-      </property>
-     </widget>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">

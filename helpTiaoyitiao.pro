@@ -32,5 +32,3 @@ LIBS += C:\opencv\Release\install\x86\mingw\lib\libopencv_calib3d340.dll.a
 
 RC_ICONS = "myapp.ico"
 
-RESOURCES += \
-    11.qrc

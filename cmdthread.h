@@ -25,8 +25,12 @@ public:
     cv::Mat qipanimagegs;
     double minVal; double maxVal; cv::Point minLoc; cv::Point maxLoc;
     int cnt;
-    quint64 cishu,maxcishu,LocFeny,LocMaxX,LocMaxY,WeiZhuangfanwei;
+    quint64 cishu,maxcishu,LocFeny,LocMaxX,LocMaxY;
     double LenMultiple,lenth;
+    //小人参数
+    quint64 xiaorenw;
+    quint64 BoziY,JiaoX,JiaoY;
+    quint64 TouchYMax,TouchYMin;
 signals:
     void adbstringsend(QString);
     void chengxujieshu();

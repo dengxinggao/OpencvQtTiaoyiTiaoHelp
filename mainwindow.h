@@ -5,10 +5,6 @@
 #include "cmdthread.h"
 
 
-#define PS1080x1920Multiple 1.38
-#define PS1080x1920Feny 300
-
-
 namespace Ui {
 class MainWindow;
 }
@@ -21,11 +17,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     cmdthread t;
-    quint16 LocFeny,LocMaxX,LocMaxY;
     bool EquipmentOk;
-    double LenMultiple;
     QImage *fbl;
-    qint64 WeiZhuangfanwei;
 
 private slots:
 
@@ -42,6 +35,8 @@ private slots:
     void on_pushButton_start_clicked();
 
     void on_checkBox_clicked();
+
+    void on_lineEdit_LenMultiple_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
