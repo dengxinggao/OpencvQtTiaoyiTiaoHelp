@@ -30,6 +30,8 @@ private slots:
 
     void labechange();
 
+    void checkchange(bool bb);
+
     void on_pushButton_connect_clicked();
 
     void on_pushButton_start_clicked();
@@ -37,6 +39,8 @@ private slots:
     void on_checkBox_clicked();
 
     void on_lineEdit_LenMultiple_textChanged(const QString &arg1);
+
+    void on_checkBox_2_stateChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;

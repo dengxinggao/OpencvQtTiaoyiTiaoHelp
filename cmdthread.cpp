@@ -12,6 +12,13 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <math.h>
 
+
+//#define Debug_Dantiao//只跳一次
+
+//#define Debug_NReadImg//不读图
+
+//#define Debug_NoSendCmd//不发指令
+
 cv::Mat dispimage ;
 
 cmdthread::cmdthread()
@@ -21,7 +28,7 @@ cmdthread::cmdthread()
     QTime tm;
     tm = QTime::currentTime();
     srand(tm.hour()*1440000+tm.minute()*60000+tm.second()*1000+tm.msec());
-    maxcishu = 5+qrand()%15;
+    maxcishu = 3+qrand()%6;
     cishu = 0;
 }
 
@@ -37,11 +44,14 @@ void cmdthread::qidong()
 
 void cmdthread::run()
 {
-    QProcess process;
+    QProcess process;QString adbstring ;
     while(!Stop)
     {
+        #ifdef Debug_Dantiao
+        Stop = true;
+        #endif
+        #ifndef Debug_NReadImg
         process.start("adb shell screencap /sdcard/screen.png");
-        QString adbstring ;
         process.waitForFinished();
         adbstring = process.readAllStandardError();
         adbstring.chop(2);
@@ -63,31 +73,8 @@ void cmdthread::run()
                emit chengxujieshu();
                return;
         }
-        //emit adbstringsend("截图成功");
+        #endif
 
-        /*
-        if(LocMaxX == 720)
-        {
-            xiaorenimage = cv::imread("720x1280xiaoren.png");
-        }
-        else if(LocMaxX == 540)
-        {
-            xiaorenimage = cv::imread("540x960xiaoren.png");
-        }
-        else if(LocMaxX ==900)
-        {
-            xiaorenimage = cv::imread("900x1600xiaoren.png");
-        }
-        else if(LocMaxX ==1080)
-        {
-            xiaorenimage = cv::imread("1080x1920xiaoren.png");
-        }
-        else
-        {
-            emit adbstringsend("改分辨率无法支持");
-            break;
-        }
-        */
         xiaorenimage = cv::imread("xiaoren.png");
         cv::resize(xiaorenimage,xiaorenimage,cv::Size(76*LocMaxX/1080,209*LocMaxY/1920));
 
@@ -101,12 +88,13 @@ void cmdthread::run()
         cv::normalize( xiaorenmtresult, xiaorenmtresult, 0, 1, cv::NORM_MINMAX, -1, cv::Mat() );
 
         cv::minMaxLoc( xiaorenmtresult, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat() );
-        //qDebug()<<minVal<<maxVal;
 
         cv::GaussianBlur(qipanimage,qipanimagegs,cv::Size(7,7),0,0);//高斯模糊
         cv::Canny(qipanimagegs,qipanimage,1,10,3);
 
-        cv::rectangle(qipanimage,maxLoc,cv::Point(maxLoc.x+78,maxLoc.y+211),(0,0,0),CV_FILLED);
+
+        cv::rectangle(qipanimage,cv::Point(maxLoc.x-2,maxLoc.y-2),cv::Point(maxLoc.x+(76*LocMaxX/1080)+2,maxLoc.y+(209*LocMaxY/1920)+2),(0,0,0),CV_FILLED);
+
 
 
 
@@ -199,14 +187,14 @@ void cmdthread::run()
         {
             if((tiao_y - firstpoint_y) > (JiaoX*1.3) )
             {
-                tiao_y = tiao_y - JiaoX*0.8;//qrand()%(JiaoX/2);
+                tiao_y = tiao_y - JiaoX*0.5;//qrand()%(JiaoX/2);
                 if(tiao_x>maxLoc.x)
                 {
-                    tiao_x = tiao_x + JiaoX*0.7;//qrand()%(JiaoX/2);
+                    tiao_x = tiao_x + JiaoX*0.5;//qrand()%(JiaoX/2);
                 }
                 else
                 {
-                    tiao_x = tiao_x - JiaoX*0.7;//qrand()%(JiaoX/2);
+                    tiao_x = tiao_x - JiaoX*0.5;//qrand()%(JiaoX/2);
                 }
                 //cv::circle(dispimage,cv::Point(tiao_x,tiao_y),5,(255,255,255),-1);//标出人位置
                 emit adbstringsend("偏一下");
@@ -237,8 +225,10 @@ void cmdthread::run()
             timems = LenMultiple * lenth ;
             QString s;
             s = "adb shell input swipe " + QString::number(ax, 10) + " " + QString::number(ay, 10) + " " +  QString::number(ax, 10) + " " +  QString::number(ay, 10) + " " + QString::number((int)timems, 10);
+            #ifndef Debug_NoSendCmd
             process.start(s);
             process.waitForFinished();
+            #endif
 
             emit adbstringsend("距离"+QString::number((int)lenth,10)+",按压" + QString::number(timems,10) + "ms");
         }
@@ -255,13 +245,23 @@ void cmdthread::run()
             quint16 xxm;
             xxm = 2000 + qrand()%8000;
             emit adbstringsend("跳了" + QString::number(cishu,10) + "下,休息"+ QString::number(xxm,10) +"毫秒再跳");
-            msleep(xxm);
             cishu = 0;
-            maxcishu = 5+qrand()%15;
+            maxcishu = 3+qrand()%6;
+            if(AutoPian)
+            {
+                RandMove = !RandMove;
+                emit pianchange(RandMove);
+            }
+            #ifndef Debug_Dantiao
+            msleep(xxm);
+            #endif
         }
         else
         {
-            msleep((qrand()%1500)+1500);
+            #ifndef Debug_Dantiao
+            msleep((qrand()%1000)+1000);
+            #endif
         }//msleep(1);
     }
+    emit chengxujieshu();
 }

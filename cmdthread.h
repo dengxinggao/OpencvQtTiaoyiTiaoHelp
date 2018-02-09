@@ -18,7 +18,7 @@ public:
     cmdthread();
     void stop();
     void qidong();
-    bool Stop,RandMove;
+    bool Stop,RandMove,AutoPian;
     cv::Mat qipanimage ;
     cv::Mat xiaorenimage ;
     cv::Mat xiaorenmtresult;
@@ -35,6 +35,7 @@ signals:
     void adbstringsend(QString);
     void chengxujieshu();
     void displaymat();
+    void pianchange(bool);
 protected:
     void run();
 

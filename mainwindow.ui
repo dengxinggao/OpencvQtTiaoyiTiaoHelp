@@ -36,7 +36,7 @@
        </size>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;跳一跳辅助程序Ver1.3.2&lt;/p&gt;&lt;p&gt;自动适配所有分辨率16：9的手机&lt;/p&gt;&lt;p&gt;Qt5.6.3&lt;/p&gt;&lt;p&gt;Opencv3.4.0&lt;/p&gt;&lt;p&gt;ADBShell&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/dengxinggao/OpencvQtTiaoyiTiaoHelp&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/dengxinggao/OpencvQtTiaoyiTiaoHelp&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;跳一跳辅助程序Ver1.3.3&lt;/p&gt;&lt;p&gt;自动适配所有分辨率16：9的手机&lt;/p&gt;&lt;p&gt;Qt5.6.3&lt;/p&gt;&lt;p&gt;Opencv3.4.0&lt;/p&gt;&lt;p&gt;ADBShell&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/dengxinggao/OpencvQtTiaoyiTiaoHelp&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/dengxinggao/OpencvQtTiaoyiTiaoHelp&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
@@ -58,6 +58,13 @@
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>自动偏差</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QCheckBox" name="checkBox">
         <property name="toolTip">
